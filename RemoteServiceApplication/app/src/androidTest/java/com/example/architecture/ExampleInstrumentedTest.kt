@@ -1,4 +1,4 @@
-package com.example.remoteserviceapplication
+package com.example.architecture
 
 import androidx.test.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4

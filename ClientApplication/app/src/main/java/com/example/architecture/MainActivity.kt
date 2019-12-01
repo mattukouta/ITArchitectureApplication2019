@@ -7,9 +7,12 @@ import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
 import android.os.RemoteException
+import android.util.Log
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import android.view.View
+import com.example.remoteservice.IRemoteService
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -40,22 +43,28 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val serviceIntent = Intent(this, LocalService::class.java)
-        serviceIntent.action = ILocalService::class.java.name
         bindService(
             serviceIntent,
             myConnection,
             Context.BIND_AUTO_CREATE
         )
 
-        val mIntent = Intent(this, LocalService::class.java)
-        serviceIntent.action = ILocalService::class.java.name
+        val mIntent = Intent("com.example.remoteservice.IRemoteService")
+        mIntent.setPackage("com.example.remoteservice")
         bindService(
-            serviceIntent,
-            myConnection,
+            mIntent,
+            mConnection,
             Context.BIND_AUTO_CREATE
         )
 
-        findViewById<View>(R.id.startAppButton).setOnClickListener {
+        startAppButton.setOnClickListener {
+            try {
+                Log.d("checkremote", mService!!.string("hoge"))
+                mService?.start("hoge")
+            } catch (e: RemoteException) {
+                e.printStackTrace()
+            }
+
             val appName = findViewById<EditText>(R.id.requestAppName)
             try {
                 myService?.start(appName.text.toString())

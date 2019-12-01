@@ -1,4 +1,4 @@
-package com.example.remoteserviceapplication
+package com.example.architecture
 
 import org.junit.Test
 
