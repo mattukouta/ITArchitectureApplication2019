@@ -1,4 +1,4 @@
-package com.example.architecture
+package com.example.remoteservice
 
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager

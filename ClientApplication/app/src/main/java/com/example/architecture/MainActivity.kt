@@ -11,21 +11,22 @@ import android.util.Log
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import android.view.View
+import android.widget.Toast
 import com.example.remoteservice.IRemoteService
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    var myService: ILocalService? = null
-    private val myConnection = object : ServiceConnection {
-        override fun onServiceConnected(className: ComponentName, service: IBinder) {
-            myService = ILocalService.Stub.asInterface(service)
-        }
-
-        override fun onServiceDisconnected(className: ComponentName) {
-            myService = null
-        }
-    }
+//    var myService: ILocalService? = null
+//    private val myConnection = object : ServiceConnection {
+//        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+//            myService = ILocalService.Stub.asInterface(service)
+//        }
+//
+//        override fun onServiceDisconnected(className: ComponentName) {
+//            myService = null
+//        }
+//    }
 
     var mService: IRemoteService? = null
     private val mConnection = object : ServiceConnection {
@@ -42,12 +43,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val serviceIntent = Intent(this, LocalService::class.java)
-        bindService(
-            serviceIntent,
-            myConnection,
-            Context.BIND_AUTO_CREATE
-        )
+//        val serviceIntent = Intent(this, LocalService::class.java)
+//        bindService(
+//            serviceIntent,
+//            myConnection,
+//            Context.BIND_AUTO_CREATE
+//        )
 
         val mIntent = Intent("com.example.remoteservice.IRemoteService")
         mIntent.setPackage("com.example.remoteservice")
@@ -58,19 +59,22 @@ class MainActivity : AppCompatActivity() {
         )
 
         startAppButton.setOnClickListener {
-            try {
-                Log.d("checkremote", mService!!.string("hoge"))
-                mService?.start("hoge")
-            } catch (e: RemoteException) {
-                e.printStackTrace()
+
+            if (requestAppName.text.isNotEmpty()) {
+                try {
+                    val returnText  = mService?.start(requestAppName.text.toString())
+                    Toast.makeText(this, returnText.toString(), Toast.LENGTH_SHORT).show()
+                } catch (e: RemoteException) {
+                    e.printStackTrace()
+                }
             }
 
-            val appName = findViewById<EditText>(R.id.requestAppName)
-            try {
-                myService?.start(appName.text.toString())
-            } catch (e: RemoteException) {
-                e.printStackTrace()
-            }
+//            val appName = findViewById<EditText>(R.id.requestAppName)
+//            try {
+//                myService?.start(appName.text.toString())
+//            } catch (e: RemoteException) {
+//                e.printStackTrace()
+//            }
         }
     }
 }
