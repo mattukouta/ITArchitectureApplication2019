@@ -24,7 +24,7 @@ class RemoteService : Service() {
                     val intent = Intent(Intent.ACTION_MAIN)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                     intent.action = "android.intent.category.LAUNCHER"
-                    intent.setClassName("com.android.chrome", "com.google.android.apps.chrome.Main")
+                    intent.setClassName(infoList[0], infoList[1])
                     startActivity(intent)
 //
                     returnText = "${text}を起動します"
