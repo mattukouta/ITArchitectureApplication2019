@@ -12,7 +12,17 @@
 - サービス機能を呼び出す側のアプリも作成すること
 - (可能であれば)GitHubでプロジェクトのコードを管理すること
 
-## 参考サイト
+# 作成サービス
+### アプリ名を入力することで，該当アプリを起動させるサービス
+- 現状では以下のキーワードで該当アプリが起動します
+  - `chrome`，`設定`，`youtube`，`マップ`，`パズドラ`，`モンスト`，`ミュージック`，`カレンダー`，`メール`，`twitter`
+- `com/example/remoteservice/ApplicationList.kt`内のAppListに`{アプリ名} to arrayOf({パッケージ名}, {クラス名})`で新たにアプリを追加可能
+  - 例："chrome" to arrayOf("com.android.chrome", "com.google.android.apps.chrome.Main")
+  - アプリ名は入力する文字を入力してください
+  - パッケージ名とクラス名は，調べるor本アプリ内でLog出力している部分を元に入力してください  
+  ※ Log出力は一度，本アプリ内の`アプリ起動`ボタンを押すことで，インストールされているアプリのパッケージ名とクラス名が表示されます
+
+# 参考サイト
 ### AIDL関連
 - Androidインターフェース定義言語(AIDL), https://developer.android.com/guide/components/aidl
 - commonsguy/cw-advandroid, https://github.com/commonsguy/cw-advandroid/tree/master/AdvServices
