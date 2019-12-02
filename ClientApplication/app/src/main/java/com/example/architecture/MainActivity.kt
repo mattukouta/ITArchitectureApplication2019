@@ -17,25 +17,25 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-//    var myService: ILocalService? = null
-//    private val myConnection = object : ServiceConnection {
+//    var localService: ILocalService? = null
+//    private val localConnection = object : ServiceConnection {
 //        override fun onServiceConnected(className: ComponentName, service: IBinder) {
-//            myService = ILocalService.Stub.asInterface(service)
+//            localService = ILocalService.Stub.asInterface(service)
 //        }
 //
 //        override fun onServiceDisconnected(className: ComponentName) {
-//            myService = null
+//            localService = null
 //        }
 //    }
 
-    var mService: IRemoteService? = null
-    private val mConnection = object : ServiceConnection {
+    var remoteService: IRemoteService? = null
+    private val remoteConnection = object : ServiceConnection {
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
-            mService = IRemoteService.Stub.asInterface(service)
+            remoteService = IRemoteService.Stub.asInterface(service)
         }
 
         override fun onServiceDisconnected(className: ComponentName) {
-            mService = null
+            remoteService = null
         }
     }
 
@@ -43,38 +43,38 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        val serviceIntent = Intent(this, LocalService::class.java)
+//        val localIntent = Intent(this, LocalService::class.java)
 //        bindService(
-//            serviceIntent,
-//            myConnection,
+//            localIntent,
+//            localConnection,
 //            Context.BIND_AUTO_CREATE
 //        )
 
-        val mIntent = Intent("com.example.remoteservice.IRemoteService")
-        mIntent.setPackage("com.example.remoteservice")
+        val remoteIntent = Intent("com.example.remoteservice.IRemoteService")
+        remoteIntent.setPackage("com.example.remoteservice")
         bindService(
-            mIntent,
-            mConnection,
+            remoteIntent,
+            remoteConnection,
             Context.BIND_AUTO_CREATE
         )
 
         startAppButton.setOnClickListener {
+//            if (requestAppName.text.isNotEmpty()) {
+//                try {
+//                    localService?.start(requestAppName.text.toString())
+//                } catch (e: RemoteException) {
+//                    e.printStackTrace()
+//                }
+//            }
 
             if (requestAppName.text.isNotEmpty()) {
                 try {
-                    val returnText  = mService?.start(requestAppName.text.toString())
+                    val returnText  = remoteService?.start(requestAppName.text.toString())
                     Toast.makeText(this, returnText.toString(), Toast.LENGTH_SHORT).show()
                 } catch (e: RemoteException) {
                     e.printStackTrace()
                 }
             }
-
-//            val appName = findViewById<EditText>(R.id.requestAppName)
-//            try {
-//                myService?.start(appName.text.toString())
-//            } catch (e: RemoteException) {
-//                e.printStackTrace()
-//            }
         }
     }
 }
