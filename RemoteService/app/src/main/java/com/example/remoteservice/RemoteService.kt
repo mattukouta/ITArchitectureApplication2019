@@ -11,7 +11,7 @@ class RemoteService : Service() {
     private val binder = object : IRemoteService.Stub() {
         override fun start(text: String): String {
 
-            val returnText: String
+            var returnText = ""
 
 
             val appList = ApplicationList().AppList
@@ -20,16 +20,19 @@ class RemoteService : Service() {
                 val packageList = ApplicationList().getInstalledApplication(application.packageManager)
                 val infoList = appList[text]
 
-                if (packageList.contains(infoList!![0])) {
-                    val intent = Intent(Intent.ACTION_MAIN)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                    intent.action = "android.intent.category.LAUNCHER"
-                    intent.setClassName(infoList[0], infoList[1])
-                    startActivity(intent)
-//
-                    returnText = "${text}を起動します"
-                } else {
-                    returnText = "インストールされていません"
+                if (infoList != null) {
+
+                    if (packageList.contains(infoList[0])) {
+                        val intent = Intent(Intent.ACTION_MAIN)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        intent.action = "android.intent.category.LAUNCHER"
+                        intent.setClassName(infoList[0], infoList[1])
+                        startActivity(intent)
+
+                        returnText = "${text}を起動します"
+                    } else {
+                        returnText = "インストールされていません"
+                    }
                 }
             } else {
                 returnText = "対象のアプリに存在しません"
